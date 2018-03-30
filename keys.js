@@ -1,6 +1,7 @@
 
 
-console.log('this is loaded');
+console.log('Jakes Liri App');
+console.log("-------------------------------------------------------------------");
 
 exports.twitter = {
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
