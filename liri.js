@@ -1,27 +1,33 @@
 // How do i make if so you have two type in a certin arg to pass 
 require('dotenv').config()
 var Twitter = require('twitter')
-var Spotify = require('node-spotify-api');
 // var nodeArgs = process.argv; ??
 // Keys for all API's
 var config = require("./keys")
+var global = process.argv[2];
 // Twitter call and response tweets
-var myArg = process.argv[2];
-console.log(myArg);
+var tweet= process.argv[2];
+
 console.log("");
 var client = new Twitter(config.twitter);
 var params = { screen_name: 'jakearagland' };
 client.get('statuses/user_timeline', params, function (error, tweets, response) {
-  if (!error) {
+  if (global === "my_tweets") {
     console.log(tweets);
+    console.log("");
+    console.log("");
+    console.log("");
+    console.log("-------------------------------------------------------------------");
   } else {
     console.log(error);
   }
 });
 // OMB call and response
+var move = config.omd.apiKey
+var request = require('request');
 var movieName = process.argv[2];
-request("http://www.omdbapi.com/?t=s&y=&plot=short&apikey=", function (error, response, body) {  // fix so i can use a key for the .env
-  if (!error && response.statusCode === 200) {
+request("http://www.omdbapi.com/?t=remember+the+titans&y=&plot=short&apikey=" + move, function (error, response, body) {  // fix so i can use a key for the .env
+  if (global === "movie-this") {
 // All the log to the API for movie.
 // Still have question here for searching all movie
     console.log("Movie Title: " + JSON.parse(body).Title);
@@ -34,43 +40,25 @@ request("http://www.omdbapi.com/?t=s&y=&plot=short&apikey=", function (error, re
     console.log("");
     console.log("");
     console.log("-------------------------------------------------------------------");
-
   }
 });
 //Cant get this to work
 // Spoifty call to API and log
 var track = process.argv[2];
 var Spotify = require('node-spotify-api');
-var sclient = new Spotify(config);
+var sclient = new Spotify(config.spotify);
   
-Spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
+sclient.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
   if (err) {
     return console.log('Error occurred: ' + err);
   }
-console.log(data); 
+  else if (global === "spotify-this-song"){
+console.log(JSON.stringify(data, null, 4)); 
 console.log("");
 console.log("");
 console.log("");
 console.log("-------------------------------------------------------------------");
+}
 });
 
 
-
-
-
-
-
-
-
-//example
-
-//console.log(someVariable) // undefined
-
-// function Car(make) {
-//     this.make = config.key
-// }
-
-/*var tweet = new Car('honda')
-var tweet2 = new Car('toyota')
-console.log(tweet.make)
-console.log(tweet2.make)*/
